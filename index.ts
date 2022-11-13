@@ -9,7 +9,7 @@ const API_URL = "https://api-1.adax.no/client-api";
 // username:
 // grant_type:password
 
-const resp = await fetch(`${API_URL}/auth/token`, {
+let resp = await fetch(`${API_URL}/auth/token`, {
     method: "POST",
     headers:{
       "Content-Type": "application/x-www-form-urlencoded"
@@ -20,10 +20,17 @@ const resp = await fetch(`${API_URL}/auth/token`, {
         "password": CLIENT_SECRET
     })
 });
-const res = await resp.json();
+let res = await resp.json();
 const jwt = res["access_token"];
 
 // GET room temperature: https://api-1.adax.no/client-api/rest/v1/content/
 // Bearer token from above
 
-console.log(jwt);
+resp = await fetch(`${API_URL}/rest/v1/content/`, {
+  headers:{
+    "Authorization": `Bearer ${jwt}`
+  }, 
+});
+res = await resp.json();
+
+console.log(res);
